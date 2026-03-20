@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'Aammu';
+    src: url('/council-cms/public/fonts/custom-fonts/aammu.woff2') format('woff2');    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MVTyper';
+    src: url('/council-cms/public/fonts/custom-fonts/mvtyper.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* This targets the entire body when the lang attribute is 'dv' */
+html[lang="dv"] body {
+    font-family: "Aammu", sans-serif !important;
+    direction: rtl !important;
+}
+.dhivehi-title-column {
+    font-family: 'Aammu', sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
+    font-size: 1.5rem !important;
+    line-height: 1.6 !important;
+}
+/* Ensure table headers, sidebar labels, and buttons follow suit */
+html[lang="dv"] .fi-sidebar-item-label,
+html[lang="dv"] .fi-ta-header-cell-label,
+html[lang="dv"] .fi-header-heading,
+html[lang="dv"] .fi-ta-cell {
+    font-family: "Aammu", sans-serif !important;
+    text-align: right !important;
+}
+
+/* Fix for Dhivehi font size which often looks smaller than English */
+html[lang="dv"] .fi-main {
+    font-size: 1.05rem;
+}
