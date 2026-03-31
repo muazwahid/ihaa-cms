@@ -9,11 +9,18 @@ use Filament\Resources\Pages\ListRecords;
 class ListBanners extends ListRecords
 {
     protected static string $resource = BannerResource::class;
-
-    protected function getHeaderActions(): array
+    public function getBreadcrumbs(): array
     {
         return [
-            CreateAction::make(),
+            // This replaces "List" with your menu label (e.g., ސްލައިޑްސް)
+            '#' => __('navigation.resources.banners'),
+        ];
+    }
+protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make()
+            ->label(__('navigation.new') . ' ' . __('navigation.resources.banner')),
         ];
     }
 }

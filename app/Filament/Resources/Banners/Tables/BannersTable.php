@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Banners\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -20,9 +21,13 @@ class BannersTable
         return $table
             ->columns([
                 ImageColumn::make('image_path')
-                ->label(__('navigation.column.imagePath')),
+                    ->label(__('navigation.column.image_path'))
+                    ->disk('public') // <--- This tells Filament where the file actually is
+                    ->visibility('public')
+                    ->square()
+                    ->size(40),
                 TextColumn::make('link_url')
-                ->label(__('navigation.column.link')) 
+                ->label(__('navigation.column.slide_title')) 
                     ->state(fn (Banner $record): string => $record->getTranslation('title', app()->getLocale()))
                     ->searchable()
                     ->sortable(),
@@ -47,14 +52,18 @@ class BannersTable
             ->filters([
                 //
             ])
-            ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+            ->actions([
+                EditAction::make()
+                ->label(__('actions.edit')),
+                DeleteAction::make()
+                ->label(__('actions.delete')),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                    DeleteBulkAction::make()
+                    ->label(__('actions.bulk-delete')),
+                ])
+                ->label(__('actions.bulk-action')),
             ]);
     }
 }

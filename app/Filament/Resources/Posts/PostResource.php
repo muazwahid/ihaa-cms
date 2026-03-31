@@ -19,22 +19,36 @@ class PostResource extends Resource
 
     // Matching the BannerResource style
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    
     // This changes the Sidebar Label
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.resources.postBlog'); 
+    }
+    public static function getGroupIcon(): ?string
+    {
+        // This is the icon for the navigation group
+        return 'heroicon-o-arrow-down-tray';
+    }
     public static function getNavigationLabel(): string
     {
-        return __('navigation.sideMenu.posts');
+        return __('navigation.resources.posts');
     }
 
     // This changes the Heading on the List page
     public static function getPluralModelLabel(): string
     {
-        return __('navigation.sideMenu.posts');
+        return __('navigation.resources.posts');
     }
 
     // This changes the "Create Post" button and breadcrumbs
     public static function getModelLabel(): string
     {
-        return __('navigation.sideMenu.post');
+        return __('navigation.resources.post');
+    }
+    public static function getCreateActionLabel(): string
+    {
+        return __('navigation.new') . ' ' . __('navigation.resources.post');
     }
     public static function form(Schema $schema): Schema
     {

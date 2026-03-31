@@ -13,38 +13,33 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
-        // This changes the Sidebar Label
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cube';
+
     public static function getNavigationLabel(): string
     {
-        return __('navigation.sideMenu.projects');
+        return __('navigation.resources.projects'); 
     }
-
     // This changes the Heading on the List page
     public static function getPluralModelLabel(): string
     {
-        return __('navigation.sideMenu.projects');
+        return __('navigation.resources.projects');
     }
+
+    // This changes the "Create Post" button and breadcrumbs
     public static function getModelLabel(): string
     {
-        return __('navigation.sideMenu.project');
+        return __('navigation.resources.projects');
     }
-    protected static ?string $recordTitleAttribute = 'name';
-
     public static function form(Schema $schema): Schema
     {
-        // This calls your specialized ProjectForm class
+        // Make sure this namespace matches your folder structure exactly
         return \App\Filament\Resources\Projects\Schemas\ProjectForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
+        // Make sure this namespace matches your folder structure exactly
         return \App\Filament\Resources\Projects\Tables\ProjectsTable::configure($table);
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
     }
 
     public static function getPages(): array

@@ -7,20 +7,22 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor; // Changed from Textarea
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section; // New: Correct structural namespace
-use Filament\Schemas\Components\Grid;    // New: Correct structural namespace
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Str;
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
+
 
 class PostForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Post Content')
+            Section::make(__('navigation.form.post-content'))
                 ->schema([
                     TranslatableTabs::make()
                         ->locales([
@@ -29,9 +31,9 @@ class PostForm
                         ])
                         ->columnSpanFull()
                         ->schema([
-                            Textarea::make('title')
+                            TextInput::make('title')
+                                ->label(__('navigation.form.title'))
                                 ->required()
-                                ->rows(2)
                                 ->hintAction(
                                     \Filament\Actions\Action::make('translateTitle')
                                         ->label('Translate ✨')
@@ -45,20 +47,31 @@ class PostForm
 
                                             try {
                                                 $result = Gemini::generativeModel(model: 'gemini-3-flash-preview')
-                                                    ->generateContent("Translate the following text to {$targetLang}. Return ONLY the translated sentence. No explanations, no options, no quotes:\n\n{$state}");
+                                                    ->generateContent("Translate the following text to {$targetLang}. Return ONLY the translated sentence:\n\n{$state}");
+                                                
                                                 $set($targetField, trim($result->text()));
 
+                                                // Auto-generate slug if translating from English
                                                 if ($isEnglish) {
-                                                    $set('slug', Str::slug($state));
+                                                    $set('slug', \Illuminate\Support\Str::slug($state));
                                                 }
-                                            } catch (\Exception $e) {}
+                                            } catch (\Exception $e) {
+                                                // Fail silently or add notification here
+                                            }
                                         })
                                 )
-                                ->extraInputAttributes(['style' => 'direction: auto; font-family: "Faruma", sans-serif;']),
-
-                            Textarea::make('content')
+                                ->extraInputAttributes(fn ($component) => [
+                                    'style' => str_ends_with($component->getStatePath(), '.dv') 
+                                        ? 'font-family: "MVTyper", sans-serif !important; direction: rtl; text-align: right; font-size: 1.25rem !important;' 
+                                        : 'direction: ltr; text-align: left;',
+                                ])
+                                ->extraAttributes(fn ($component) => [
+                                    'class' => str_ends_with($component->getStatePath(), '.dv') ? 'dv-title-input' : '',
+                                ]),
+                            // Content converted to RichEditor
+                            RichEditor::make('content')
+                                ->label(__('navigation.form.content'))
                                 ->required()
-                                ->rows(8)
                                 ->hintAction(
                                     \Filament\Actions\Action::make('translateContent')
                                         ->label('Translate ✨')
@@ -72,45 +85,67 @@ class PostForm
 
                                             try {
                                                 $result = Gemini::generativeModel(model: 'gemini-3-flash-preview')
-                                                    ->generateContent("Translate the following text to {$targetLang}. Return ONLY the translated text. Preserve paragraph structure:\n\n{$state}");
+                                                    ->generateContent("Translate to {$targetLang}. Return ONLY HTML content. Preserve all formatting:\n\n{$state}");
                                                 $set($targetField, trim($result->text()));
                                             } catch (\Exception $e) {}
                                         })
                                 )
-                                ->extraInputAttributes(['style' => 'direction: auto; font-family: "Faruma", sans-serif;']),
+                                // 1. Target the text input area specifically
+                                ->extraInputAttributes(fn ($component) => [
+                                    'style' => str_ends_with($component->getStatePath(), '.dv') 
+                                        ? 'font-family: "MVTyper", sans-serif !important; direction: rtl; text-align: right;' 
+                                        : 'direction: ltr; text-align: left;',
+                                ])
+                                // 2. Target the outer wrapper for the RTL layout and your custom CSS class
+                                ->extraAttributes(fn ($component) => [
+                                    'style' => str_ends_with($component->getStatePath(), '.dv') ? 'direction: rtl;' : 'direction: ltr;',
+                                    'class' => str_ends_with($component->getStatePath(), '.dv') ? 'dv-rich-editor' : '',
+                                ])
                         ]),
                 ]),
 
-            Section::make('Settings & Media')
+            Section::make(__('navigation.form.settings-media'))
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('slug')
+                            ->label(__('navigation.form.slug'))
                             ->required()
                             ->unique(ignorable: fn ($record) => $record),
-                        Select::make('category')
-                            ->options([
-                                'news' => 'News',
-                                'notices' => 'Notices',
-                                'reports' => 'Reports'
-                            ])
-                            ->required(),
-                    ]),
+                    Select::make('category_id')
+                        ->label(__('navigation.form.category'))
+                        ->relationship(
+                            name: 'category', 
+                            titleAttribute: 'name' 
+                        )
+                        // This is the fix: It manually extracts the translation for the dropdown
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
+                        ->searchable()
+                        ->preload()
+                        ->required()
+                        ->native(false),
+                                        ]),
 
                     FileUpload::make('featured_image')
+                        ->label(__('navigation.form.featured_image'))
                         ->image()
                         ->directory('posts'),
 
                     Grid::make(3)->schema([
-                        Toggle::make('is_featured')->label('Featured Post'),
-                        Toggle::make('show_sidebar')->default(true),
+                        Toggle::make('is_featured')->label(__('navigation.form.is_featured')),
+                        Toggle::make('show_sidebar')->default(true)->label(__('navigation.form.show_sidebar')),
+                        
                         Select::make('status')
-                            ->options(['draft' => 'Draft', 'published' => 'Published'])
+                            ->label(__('navigation.form.status'))
+                            ->options([
+                                'draft' => __('navigation.form.status_draft'),
+                                'published' => __('navigation.form.status_published'),
+                            ])
                             ->default('draft')
                             ->required(),
                     ]),
 
                     Textarea::make('sidebar_config')
-                        ->label('Sidebar Configuration (JSON)')
+                       ->label(__('navigation.form.sidebar_config'))
                         ->placeholder('{"key": "value"}')
                         ->columnSpanFull()
                         ->rules([

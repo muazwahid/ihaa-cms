@@ -6,12 +6,13 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use App\Filament\Widgets\IhaaInfoWidget;
+use App\Filament\Widgets\LatestActivity;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -21,6 +22,9 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Css;
+use Filament\Navigation\NavigationItem;
+use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\Auth\Login;
 
 class CAdminPanelProvider extends PanelProvider
 {
@@ -30,10 +34,15 @@ class CAdminPanelProvider extends PanelProvider
             ->default()
             ->id('c-admin')
             ->path('c-admin')
-            ->login()
+            //->login()
+            ->login(\App\Filament\Pages\Auth\Login::class) // Custom Login
+            // Use a closure so it checks the locale dynamically
+            
+            ->brandName(fn () => app()->getLocale() === 'dv' ? 'އިހާ ސީއެމްއެސް' : 'Iha CMS')
+            ->brandLogo(asset('images/logo.png'))
             ->assets([
-                        Css::make('custom-fonts', '/council-cms/public/css/custom-fonts.css'),
-                    ])
+                Css::make('custom-style', public_path('css/app/custom-style.css')),
+            ])
             // Use MVTyper as the default body font
             ->font('MVTyper') 
             //->maxContentWidth(\Filament\Support\Enums\MaxWidth::Full);
@@ -43,14 +52,16 @@ class CAdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
-                Dashboard::class,
+                \App\Filament\Pages\Dashboard::class, // This is enough!
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                IhaaInfoWidget::class,
+                LatestActivity::class,
             ])
             ->middleware([
+                \App\Http\Middleware\SetAdminLocale::class, // Add this first
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,

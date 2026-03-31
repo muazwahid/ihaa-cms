@@ -9,12 +9,25 @@ class Project extends Model
 {
     use HasTranslations;
 
-    protected $fillable = ['name', 'description', 'lat', 'lng', 'progress_percentage', 'status', 'image_path'];
-    
-    public $translatable = ['name', 'description'];
+    protected $fillable = [
+        'name', 
+        'description', 
+        'image_path', 
+        'project_cost', 
+        'date_started', 
+        'date_ended', 
+        'progress_percentage', 
+        'status',
+        'is_featured',
+        'funded_by'
+    ];
+
+    public array $translatable = ['name','description'];
 
     protected $casts = [
-        'name' => 'array',
-        'description' => 'array',
+        'project_cost' => 'decimal:2',
+        'date_started' => 'date', // CRITICAL for DatePicker
+        'date_ended' => 'date',
+        'progress_percentage' => 'integer',
     ];
 }

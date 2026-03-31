@@ -13,15 +13,15 @@ class BannerInfolist
     {
         return $schema
             ->components([
-                ImageEntry::make('image_path'),
-                TextEntry::make('link_url'),
-                IconEntry::make('is_active')
+                ImageEntry::make('image_path')->label(__('navigation.form.image_path')),
+                TextEntry::make('link_url')->label(__('navigation.form.link_url')),
+                IconEntry::make('is_active')->label(__('navigation.form.link_url'))
                     ->boolean(),
-                TextEntry::make('sort_order')
+                TextEntry::make('sort_order')->label(__('navigation.form.sort_order'))
                     ->numeric(),
-                TextEntry::make('created_at')
+                TextEntry::make('created_at')->label(__('navigation.form.created_at'))
                     ->dateTime(),
-                TextEntry::make('updated_at')
+                TextEntry::make('updated_at')->label(__('navigation.form.updated_at'))
                     ->dateTime(),
             ]);
     }

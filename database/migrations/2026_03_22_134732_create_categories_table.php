@@ -9,17 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
+    public function up(): void
 {
-    Schema::create('settings', function (Blueprint $table) {
+    Schema::create('categories', function (Blueprint $table) {
         $table->id();
-        $table->string('group');
-        $table->string('name');
-        $table->boolean('locked')->default(false);
-        $table->json('payload');
+        $table->json('name'); // Supports translatable strings
+        $table->string('slug')->unique();
         $table->timestamps();
-
-        $table->unique(['group', 'name']);
     });
 }
 
@@ -28,6 +24,6 @@ public function up(): void
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings_table_v3');
+        Schema::dropIfExists('categories');
     }
 };

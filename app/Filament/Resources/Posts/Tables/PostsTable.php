@@ -23,10 +23,11 @@ return $table
                 ->limit(50)
                 ->searchable()
                 ->sortable(),
-
-            TextColumn::make('category')
-                ->label(__('navigation.column.category'))
-                ->badge(),
+            TextColumn::make('category.name') // Point to the 'name' field of the relationship
+                                ->label(__('navigation.column.category'))
+                                ->badge()
+                                // Safely extract the translation from the related category model
+                                ->formatStateUsing(fn ($record) => $record->category?->getTranslation('name', app()->getLocale())),
 
             ImageColumn::make('featured_image')
                 ->label(__('navigation.column.featured_image'))
@@ -39,15 +40,19 @@ return $table
             TextColumn::make('status')
                 ->label(__('navigation.column.status'))
                 ->badge(),
-        ])
+            ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                ->label(__('actions.edit')),
+                DeleteAction::make()
+                ->label(__('actions.delete')),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                    DeleteBulkAction::make()
+                    ->label(__('navigation.column.bulk-delete')),
+                ])
+                ->label(__('navigation.column.bulk-action')),
             ]);
     }
 }

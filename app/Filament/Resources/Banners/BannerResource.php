@@ -19,25 +19,24 @@ use Filament\Tables\Table;
 class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-film';
 
     // 1. Specifically for the Sidebar
     public static function getNavigationLabel(): string
     {
-        return __('navigation.sideMenu.banners');
+        return __('navigation.resources.banners');
     }
 
     // 2. For the Table Heading and Breadcrumbs
     public static function getPluralModelLabel(): string
     {
-        return __('navigation.sideMenu.banners');
+        return __('navigation.resources.banner');
     }
 
     // 3. For the "New/Create" buttons
     public static function getModelLabel(): string
     {
-        return __('navigation.sideMenu.banner'); 
+        return __('navigation.resources.banner'); 
     }
 
     public static function form(Schema $schema): Schema

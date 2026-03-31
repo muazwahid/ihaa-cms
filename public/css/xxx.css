@@ -37,3 +37,29 @@ html[lang="dv"] .fi-ta-cell {
 html[lang="dv"] .fi-main {
     font-size: 1.05rem;
 }
+/* Sidebar Navigation Item Labels */
+html[lang="dv"] .fi-sidebar-item-label {
+    font-size: 1.15rem !important; /* Adjust this value as needed */
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
+}
+html[lang="dv"] .fi-ta-header-cell {
+    font-size: 1.15rem !important; /* Adjust this value as needed */
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
+}
+html[lang="dv"] .fi-ta-text-item {
+    font-size: 1rem !important; /* Adjust this value as needed */
+    line-height: 1.5 !important;
+    font-family: 'MVTyper';
+}
+html[lang="dv"] .fi-logo {
+    font-size: 4rem !important;
+    font-family: 'Aammu', sans-serif !important;
+}
+html[lang="dv"] .fi-fo-field-wrp-label {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 4px;
+}

@@ -1,0 +1,128 @@
+@font-face {
+    font-family: 'Aammu';
+    src: url('/council-cms/public/fonts/custom-fonts/aammu.woff2') format('woff2');    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MVTyper';
+    src: url('/council-cms/public/fonts/custom-fonts/mvtyper.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+/*branding on Dashboard*/
+
+/* This targets the entire body when the lang attribute is 'dv' */
+html[lang="dv"] body {
+    direction: rtl !important;
+}
+html[lang="dv"] .dhivehi-title-column {
+    font-family: 'Aammu', sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
+    font-size: 1.5rem !important;
+    line-height: 1.6 !important;
+}
+html[lang="dv"] .fi-section-header-heading{
+    font-family: 'Aammu', sans-serif !important;
+    font-size: 18px;
+    color:#607D8B
+
+}
+/* Ensure table headers, sidebar labels, and buttons follow suit */
+html[lang="dv"] .fi-sidebar-item-label,
+html[lang="dv"] .fi-ta-header-cell-label,
+html[lang="dv"] .fi-header-heading,
+html[lang="dv"] .fi-ta-cell {
+    font-family: "Aammu", sans-serif !important;
+    text-align: right !important;
+}
+
+/* Fix for Dhivehi font size which often looks smaller than English */
+html[lang="dv"] .fi-main {
+    font-size: 1.05rem;
+}
+/* Sidebar Navigation Item Labels */
+html[lang="dv"] .fi-sidebar-item-label {
+    font-size: 1.15rem !important; /* Adjust this value as needed */
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
+}
+html[lang="dv"] .fi-ta-header-cell {
+    font-size: 1.15rem !important; /* Adjust this value as needed */
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
+}
+html[lang="dv"] .fi-ta-text-item {
+    font-size: 1rem !important; /* Adjust this value as needed */
+    line-height: 1.5 !important;
+    font-family: 'MVTyper';
+}
+html[lang="dv"] .fi-simple-header-heading{
+    font-family: 'Aammu';
+}
+
+html[lang="dv"] .fi-fo-field-wrp-label {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 4px;
+}
+/* Add Edit from style for Dhivehi*/
+html[lang="dv"] .fi-fo-textarea textarea {
+    font-family: MVTyper;
+    direction: rtl;
+}
+/* Force MVTyper on the specific title input container */
+html[lang="dv"] .dv-title-input input {
+    font-family: "MVTyper", sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+}
+
+/* Fix for the placeholder text in the title as well */
+html[lang="dv"] .dv-title-input input::placeholder {
+    font-family: "MVTyper", sans-serif !important;
+    opacity: 0.7;
+}
+html[lang="dv"] .fi-fo-field-label-content{
+    font-size: 15px;
+    font-family: Aammu;
+}
+/* form headers*/
+html[lang="dv"] .fi-ta-header-cell{
+    font-size: 1rem !important;
+    font-family: 'Aammu', sans-serif !important;
+}
+/*dropdown icon*/
+html[lang="dv"] .fi-select-input{
+   background-position: left .5rem center;
+}
+html[lang="dv"] .fi-sidebar-group-btn{
+    direction:ltr;
+}
+html[lang="dv"] .fi-sidebar-group-label{
+    direction:rtl;
+    font-family: 'mvtyper', sans-serif !important;
+    font-size: 15px;
+    color: #959694;
+}
+/*General Settings for the backend*/
+.branding {
+    height: 100px !important; /* Adjust this to get the size in your red circle */
+    width: auto;
+    object-fit: contain;
+}
+/* Ensure the widget content respects RTL spacing */
+.fi-wi-ihaa-info-widget .flex-1 {text-align: right;}
+.fi-auth-login-form .fi-logo, 
+.fi-simple-layout .fi-logo {
+    height: 5rem !important; /* Increase this (e.g., 6rem, 7rem) until it looks right */
+    width: auto;}
+.fi-sidebar-header .fi-logo {height: 3rem !important;}
+.fi-toggle{direction: ltr;}
+.fi-toggle-on {background-color: #8BC34A;}
+.fi-toggle-off {background-color: #c0ccc3;}
+
