@@ -98,41 +98,41 @@ class StaffForm
                 ->schema([
                     Grid::make(2)->schema([
                        Select::make('staff_category_id')
-    ->label(__('navigation.form.category'))
-    ->relationship('category', 'name')
-    ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
-    ->searchable()
-    ->preload()
-    ->native(false)
-    ->required()
-    ->createOptionForm([
-        Grid::make(1)->schema([
-            TextInput::make('name.en')
-                ->label('Name (English)')
-                ->required()
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn ($state, $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
-            
-            TextInput::make('name.dv')
-                ->label('Name (Dhivehi)')
-                ->required()
-                ->extraInputAttributes(['style' => 'font-family: "MVTyper"; direction: rtl; text-align: right;']),
-                
-            \Filament\Forms\Components\Hidden::make('slug'),
-        ]),
-    ])
-    ->createOptionUsing(function (array $data): int {
-        // Ensure you use the fully qualified class name or import it at the top
-        $category = \App\Models\StaffCategory::create([
-            'name' => [
-                'en' => $data['name']['en'],
-                'dv' => $data['name']['dv'],
-            ],
-            'slug' => $data['slug'] ?? \Illuminate\Support\Str::slug($data['name']['en']),
-        ]);
+                            ->label(__('navigation.form.category'))
+                            ->relationship('category', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
+                            ->searchable()
+                            ->preload()
+                            ->native(false)
+                            ->required()
+                            ->createOptionForm([
+                                Grid::make(1)->schema([
+                                    TextInput::make('name.en')
+                                        ->label('Name (English)')
+                                        ->required()
+                                        ->live(onBlur: true)
+                                        ->afterStateUpdated(fn ($state, $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                    
+                                    TextInput::make('name.dv')
+                                        ->label('Name (Dhivehi)')
+                                        ->required()
+                                        ->extraInputAttributes(['style' => 'font-family: "MVTyper"; direction: rtl; text-align: right;']),
+                                        
+                                    \Filament\Forms\Components\Hidden::make('slug'),
+                                ]),
+                            ])
+                            ->createOptionUsing(function (array $data): int {
+                                // Ensure you use the fully qualified class name or import it at the top
+                                $category = \App\Models\StaffCategory::create([
+                                    'name' => [
+                                        'en' => $data['name']['en'],
+                                        'dv' => $data['name']['dv'],
+                                    ],
+                                    'slug' => $data['slug'] ?? \Illuminate\Support\Str::slug($data['name']['en']),
+                                ]);
 
-        return $category->id;
-    }),
+                                return $category->id;
+                            }),
 
                         TextInput::make('email')
                             ->label(__('navigation.form.email'))

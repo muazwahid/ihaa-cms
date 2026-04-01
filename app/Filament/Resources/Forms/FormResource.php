@@ -18,8 +18,12 @@ class FormResource extends Resource
     protected static ?string $model = FormModel::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.resources.postBlog'); 
+    }
 
-        public static function getNavigationLabel(): string
+    public static function getNavigationLabel(): string
     {
         return __('navigation.resources.forms');
     }
