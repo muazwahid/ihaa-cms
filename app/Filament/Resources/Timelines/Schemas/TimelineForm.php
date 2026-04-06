@@ -27,15 +27,25 @@ class TimelineForm
                                 TextInput::make('title')
                                     ->required()
                                     ->extraInputAttributes(fn ($component) => [
-                                        'style' => str_ends_with($component->getStatePath(), '.dv') 
-                                            ? 'font-family: "MVTyper"; direction: rtl;' : '',
+                                    'style' => str_ends_with($component->getStatePath(), '.dv') 
+                                        ? 'font-family: "MVTyper", sans-serif !important; direction: rtl; text-align: right; font-size: 1.25rem !important;' 
+                                        : 'direction: ltr; text-align: left;',
+                                    ])
+                                    ->extraAttributes(fn ($component) => [
+                                        'class' => str_ends_with($component->getStatePath(), '.dv') ? 'dv-title-input' : '',
                                     ]),
 
                                 RichEditor::make('description')
                                     ->extraInputAttributes(fn ($component) => [
-                                        'style' => str_ends_with($component->getStatePath(), '.dv') 
-                                            ? 'direction: rtl;' : '',
-                                    ]),
+                                    'style' => str_ends_with($component->getStatePath(), '.dv') 
+                                        ? 'font-family: "MVTyper", sans-serif !important; direction: rtl; text-align: right;' 
+                                        : 'direction: ltr; text-align: left;',
+                                ])
+                                // 2. Target the outer wrapper for the RTL layout and your custom CSS class
+                                ->extraAttributes(fn ($component) => [
+                                    'style' => str_ends_with($component->getStatePath(), '.dv') ? 'direction: rtl;' : 'direction: ltr;',
+                                    'class' => str_ends_with($component->getStatePath(), '.dv') ? 'dv-rich-editor' : '',
+                                ]),
                             ]),
                     ]),
                     // SIDEBAR: Settings
@@ -48,9 +58,9 @@ class TimelineForm
 
                         Select::make('category')
                             ->options([
-                                'project' => 'Project Milestone',
-                                'achievement' => 'Achievement',
-                                'history' => 'Historical Event',
+                                'project' => __('navigation.form.timeline_project_milestone'),
+                                'achievement' => __('navigation.form.timeline_achievement'),
+                                'history' => __('navigation.form.timeline_historical_event'),
                             ])
                             ->required()
                             ->native(false)

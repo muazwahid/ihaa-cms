@@ -12,15 +12,22 @@ class ListBanners extends ListRecords
     public function getBreadcrumbs(): array
     {
         return [
-            // This replaces "List" with your menu label (e.g., ސްލައިޑްސް)
-            '#' => __('navigation.resources.banners'),
+            // The URL for the Resource index (Posts)
+            static::getResource()::getUrl('index') => __('navigation.resources.banners'),
+            
+            // The current "List" label (you can leave this out if you just want the Resource name)
+            '#' => __('navigation.breadcrumbs.list'), 
         ];
     }
-protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             CreateAction::make()
-            ->label(__('navigation.new') . ' ' . __('navigation.resources.banner')),
+            ->label(__('navigation.breadcrumbs.new') . ' ' . __('navigation.resources.banner')),
         ];
+    }
+    public function getTitle(): string
+    {
+        return __('navigation.resources.banners');
     }
 }

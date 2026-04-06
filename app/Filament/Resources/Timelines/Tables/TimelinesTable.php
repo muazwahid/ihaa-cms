@@ -33,14 +33,14 @@ class TimelinesTable
 
                 // Updated Date Column
                 TextColumn::make('event_date')
-                    ->label(__('navigation.form.event_date'))
+                    ->label(__('navigation.column.event_date'))
                     ->date('d F Y') // Example: 01 April 2026
                     ->sortable()
                     ->color('gray')
                     ->description(fn ($record) => $record->event_date->format('l')), // Shows day of the week (e.g., Wednesday)
 
                 TextColumn::make('category')
-                    ->label(__('navigation.column.category'))
+                    ->label(__('navigation.column.event_category'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'project' => 'warning',
@@ -50,7 +50,7 @@ class TimelinesTable
                     }),
 
                 IconColumn::make('is_active')
-                    ->label(__('navigation.column.is_active'))
+                    ->label(__('navigation.form.is_active'))
                     ->boolean(),
                     
                 TextColumn::make('sort_order')
@@ -60,7 +60,7 @@ class TimelinesTable
             ])
             ->filters([
                 SelectFilter::make('category')
-                    ->label(__('navigation.form.category'))
+                    ->label(__('navigation.column.event_category'))
                     ->options([
                         'project' => 'Projects',
                         'achievement' => 'Achievements',

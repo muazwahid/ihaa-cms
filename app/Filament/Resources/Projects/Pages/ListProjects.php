@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Projects\Pages;
 use App\Filament\Resources\Projects\ProjectResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Widgets\ProjectStats;
+
 
 class ListProjects extends ListRecords
 {
@@ -25,6 +27,12 @@ class ListProjects extends ListRecords
         return [
             CreateAction::make()
             ->label(__('navigation.breadcrumbs.new') . ' ' . __('navigation.resources.project')),
+        ];
+    }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            ProjectStats::class,
         ];
     }
 }

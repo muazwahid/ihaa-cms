@@ -8,6 +8,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Str;
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
+use Filament\Forms\Components\Select;
+use App\Models\Category;
 
 class CategoryForm
 {
@@ -42,11 +44,28 @@ class CategoryForm
                                     'class' => str_ends_with($component->getStatePath(), '.dv') ? 'dv-title-input' : '',
                                 ]),
                         ]),
-
+                    
                     TextInput::make('slug')
                         ->label(__('navigation.form.slug'))
                         ->required()
                         ->unique('categories', 'slug', ignoreRecord: true),
+
+                    Select::make('parent_id')
+                        ->label(fn () => app()->getLocale() === 'dv' ? 'މައި ކެޓަގަރީ' : 'Parent Category')
+                        ->relationship('parent', 'name') // 'name' works because of Spatie Translatable support in Filament
+                        ->searchable()
+                        ->placeholder(fn () => app()->getLocale() === 'dv' ? 'މައި ކެޓަގަރީއެއް ނެތް' : 'None (Root Category)')
+                        // Prevent a category from being its own parent
+                        ->disabled(fn (?Category $record) => $record === null ? false : false) 
+                        ->options(function (?\App\Models\Category $record) { 
+                            $query = \App\Models\Category::query();
+                            
+                            if ($record) {
+                                $query->where('id', '!=', $record->id);
+                            }
+                            
+                            return $query->pluck('name', 'id');
+                    }),
                 ]),
         ]);
     }

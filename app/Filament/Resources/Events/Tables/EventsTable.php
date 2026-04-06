@@ -24,10 +24,12 @@ class EventsTable
             ->defaultSort('start_date', 'desc')
             ->columns([
                 ImageColumn::make('photo')
+                    ->label(__('navigation.column.photo'))
                     ->circular()
                     ->defaultImageUrl(url('/images/placeholder-event.jpg')),
 
                 TextColumn::make('title')
+                    ->label(__('navigation.column.event_title'))
                     ->searchable()
                     ->sortable()
                     ->wrap()
@@ -35,16 +37,20 @@ class EventsTable
 
                 TextColumn::make('start_date')
                     ->label('Date & Time')
+                    ->label(__('navigation.column.event_date'))
                     ->date('d M Y')
-                    ->description(fn ($record) => $record->event_time ? \Carbon\Carbon::parse($record->event_time)->format('h:i A') : 'Time TBD')
+                    ->description(fn ($record) => $record->event_time ? \Carbon\Carbon::parse($record->event_time)->format('h:i A') : __('navigation.column.tbd'))
                     ->sortable(),
 
                 TextColumn::make('venue')
                     ->label('Venue')
+                    ->label(__('navigation.column.venue'))
                     ->searchable(),
 
                 TextColumn::make('status')
+                    ->label(__('navigation.column.status'))
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => __("navigation.column.$state"))
                     ->color(fn (string $state): string => match ($state) {
                         'upcoming' => 'info',
                         'ongoing' => 'warning',
@@ -54,7 +60,9 @@ class EventsTable
                     }),
 
                 IconColumn::make('news_generated')
+                    
                     ->label('News Made')
+                    ->label(__('navigation.column.new_made'))
                     ->boolean()
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-circle')

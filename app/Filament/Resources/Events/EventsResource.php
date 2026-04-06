@@ -19,24 +19,24 @@ class EventsResource extends Resource
     // Fix: Use Event::class, not Events::class
     protected static ?string $model = Event::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
     // Fix: Usually events use 'title' as the main attribute, not 'name'
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function getNavigationLabel(): string
     {
-        return __('navigation.resources.Events'); 
+        return __('navigation.resources.events'); 
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('navigation.resources.Events');
+        return __('navigation.resources.events');
     }
 
     public static function getModelLabel(): string
     {
-        return __('navigation.resources.Events');
+        return __('navigation.resources.event');
     }
 
     public static function form(Schema $schema): Schema

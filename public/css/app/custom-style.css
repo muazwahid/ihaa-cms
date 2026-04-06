@@ -121,8 +121,15 @@ html[lang="dv"] .fi-sidebar-group-label{
 .fi-simple-layout .fi-logo {
     height: 5rem !important; /* Increase this (e.g., 6rem, 7rem) until it looks right */
     width: auto;}
+.fi-wi-stats-overview-stat{
+    background:#cee7de26;
+}
+html[lang="dv"] .fi-wi-stats-overview-stat-value{
+    font-family: 'aammu';
+    color:#607D8B;
+    line-height:40px;
+}
 .fi-sidebar-header .fi-logo {height: 3rem !important;}
-.fi-toggle{direction: ltr;}
 .fi-toggle-on {background-color: #8BC34A;}
 .fi-toggle-off {background-color: #c0ccc3;}
 

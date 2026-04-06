@@ -1,50 +1,55 @@
 <?php
 
-namespace App\Filament\Resources\Timelines;
+namespace App\Filament\Resources\Pages;
 
-use App\Filament\Resources\Timelines\Pages\CreateTimeline;
-use App\Filament\Resources\Timelines\Pages\EditTimeline;
-use App\Filament\Resources\Timelines\Pages\ListTimelines;
-use App\Filament\Resources\Timelines\Schemas\TimelineForm;
-use App\Filament\Resources\Timelines\Tables\TimelinesTable;
-use App\Models\Timeline;
+use App\Filament\Resources\Pages\Pages\CreatePage;
+use App\Filament\Resources\Pages\Pages\EditPage;
+use App\Filament\Resources\Pages\Pages\ListPages;
+use App\Filament\Resources\Pages\Schemas\PageForm;
+use App\Filament\Resources\Pages\Tables\PagesTable;
+
+use App\Models\Page;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class TimelineResource extends Resource
+class PageResource extends Resource
 {
-    protected static ?string $model = Timeline::class;
+    protected static ?string $model = Page::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.resources.postBlog'); 
+    }
     public static function getNavigationLabel(): string
     {
-        return __('navigation.resources.timelines'); 
+        return __('navigation.resources.pages'); 
     }
     // This changes the Heading on the List page
     public static function getPluralModelLabel(): string
     {
-        return __('navigation.resources.timelines');
+        return __('navigation.resources.pages');
     }
 
     // This changes the "Create Post" button and breadcrumbs
     public static function getModelLabel(): string
     {
-        return __('navigation.resources.timelines');
+        return __('navigation.resources.page');
     }
     public static function form(Schema $schema): Schema
     {
-        return TimelineForm::configure($schema);
+        return PageForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return TimelinesTable::configure($table);
+        return PagesTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -57,9 +62,9 @@ class TimelineResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListTimelines::route('/'),
-            'create' => CreateTimeline::route('/create'),
-            'edit' => EditTimeline::route('/{record}/edit'),
+            'index' => ListPages::route('/'),
+            'create' => CreatePage::route('/create'),
+            'edit' => EditPage::route('/{record}/edit'),
         ];
     }
 }

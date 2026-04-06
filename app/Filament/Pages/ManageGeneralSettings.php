@@ -157,7 +157,24 @@ class ManageGeneralSettings extends SettingsPage
                             ->inline(false), 
                     ])
                     ->columns(2),
-            ]);
+            ]);    
+    }
+    protected function afterSave(): void
+    {
+        $data = $this->form->getState();
+        $newLocale = $data['site_language'] ?? 'en';
+
+        // 1. Update the session so the middleware sees the new language
+        session()->put('locale', $newLocale);
+        app()->setLocale($newLocale);
+
+        // 2. Trigger the full page reload after the database has been updated
+        $this->js('window.location.reload()');
         
+        // 3. Optional: Send a success notification before reload
+        \Filament\Notifications\Notification::make()
+            ->title(__('navigation.language_updated'))
+            ->success()
+            ->send();
     }
 }

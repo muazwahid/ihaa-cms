@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Support\Facades\FilamentView;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -30,6 +31,10 @@ class CAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+                FilamentView::registerRenderHook(
+            'panels::body.start',
+            fn (): string => app()->getLocale() === 'dv' ? '<div dir="rtl">' : '<div>'
+        );
         return $panel
             ->default()
             ->id('c-admin')

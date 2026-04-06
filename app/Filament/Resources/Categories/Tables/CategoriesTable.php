@@ -21,6 +21,12 @@ class CategoriesTable
                     ->searchable()
                     // Uses Aammu font for the list view as per your CSS
                     ->extraAttributes(['class' => 'dhivehi-title-column']),
+                
+                TextColumn::make('parent.name')
+                    ->label(__('navigation.column.main_category'))
+                    ->badge()
+                    ->placeholder('-')
+                    ->sortable(),
 
                 TextColumn::make('slug')
                     ->label(__('navigation.form.slug'))

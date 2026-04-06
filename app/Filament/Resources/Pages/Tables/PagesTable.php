@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Posts\Tables;
+namespace App\Filament\Resources\Pages\Tables;
 
 use Filament\Tables\Table;
 use Filament\Tables\Columns\IconColumn;
@@ -12,7 +12,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use App\Models\Post;
 
-class PostsTable
+class PagesTable
 {
     public static function configure(Table $table): Table
     {
@@ -23,19 +23,10 @@ return $table
                 ->limit(50)
                 ->searchable()
                 ->sortable(),
-            TextColumn::make('category.name') // Point to the 'name' field of the relationship
-                                ->label(__('navigation.column.category'))
-                                ->badge()
-                                // Safely extract the translation from the related category model
-                                ->formatStateUsing(fn ($record) => $record->category?->getTranslation('name', app()->getLocale())),
 
             ImageColumn::make('featured_image')
                 ->label(__('navigation.column.featured_image'))
                 ->circular(),
-
-            IconColumn::make('is_featured')
-                ->label(__('navigation.column.is_featured'))
-                ->boolean(),
 
             TextColumn::make('status')
                 ->label(__('navigation.column.status'))
@@ -53,6 +44,8 @@ return $table
                 }),
             ])
             ->actions([
+                EditAction::make()
+                ->label(__('actions.edit')),
                 DeleteAction::make()
                 ->label(__('actions.delete')),
             ])

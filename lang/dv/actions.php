@@ -6,9 +6,9 @@ return [
     'create_and_new' => 'ސޭވްކޮށްފަ އަދި ކްރިއޭޓްކުރޭ',
     'cancel' => 'ކެންސަލް',
     'save' => 'ސޭވް ކުރޭ',
-    'delete' => 'ފޮހެލާ',
+    'delete' => 'ނައްތާލާ',
     'bulk-action' => 'އެއްކޮށް ނަގާ',
-    'bulk-delete' => 'އެއްކޮށް ފޮހެލާ',
+    'bulk-delete' => 'އެއްކޮށް ނައްތާލާ',
     //choose resources
     'choose_category' => 'ކެޓެގަރީ ނަގާ',
 ];

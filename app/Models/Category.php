@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations; // Ensure this package is installed
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
@@ -12,23 +14,25 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
+        'parent_id', // Add this
     ];
 
-    /**
-     * Define which attributes should be translatable.
-     * This allows name.en and name.dv to work seamlessly.
-     */
     public array $translatable = ['name'];
 
-    /**
-     * Relationship: A category can have many posts.
-     */
+    // The Parent Category
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    // The Sub-categories
+    public function children(): HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
-    }
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
     }
 }
